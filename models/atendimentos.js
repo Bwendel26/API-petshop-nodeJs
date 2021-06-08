@@ -70,6 +70,34 @@ class Atendimento {
             }
         });
     }
+
+    altera(id, valores, res) {
+        
+        if(valores.data) {
+            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+        }
+        const sql = `UPDATE Atendimentos SET ? WHERE id=${id}`;
+
+        conexao.query(sql, [valores, id], (erro, resultados) => {
+            if(erro) {
+                res.status(400).json(erro);
+            } else {
+                res.status(200).json(resultados);
+            }
+        });
+    }
+
+    deleta(id, res) {
+        const sql = `DELETE FROM Atendimentos WHERE id=${id}`;
+
+        conexao.query(sql, id, (erro, resultados) => {
+            if(erro) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json({id});
+            }
+        });
+    }
 }
 
 module.exports = new Atendimento;
